@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <properties>
+        <property name="LOG_HOME">./logs</property>
+        <property name="FILE_NAME">springboot-log4j2</property>
+        <property name="log.sql.level">info</property>
+    </properties>
+
+
+    <Appenders>
+        <!--控制台输出-->
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout charset="UTF-8" pattern="(%d{HH:mm:ss.SSS}) [%t] %-5level %l - %msg%n" />
+        </Console>
+
+        <!--文件输出-->
+        <!--<File name="File" fileName="./springboot-log4j2.log">-->
+            <!--<PatternLayout charset="UTF-8" pattern="%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n" />-->
+        <!--</File>-->
+
+        <!--更强大的文件输出：根据文件大小或时间生成多个配置文件，避免单个配置文件过大情况-->
+        <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${LOG_HOME}/${FILE_NAME}.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout charset="UTF-8" pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <!--指定最多保存的文件个数-->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <root level="info">
+            <AppenderRef ref="CONSOLE" />
+            <AppenderRef ref="RollingRandomAccessFile" />
+        </root>
+    </Loggers>
+</configuration>
